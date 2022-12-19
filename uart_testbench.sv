@@ -6,21 +6,21 @@ real baud_delay = baud_period * 1e9;
 real baud_delay2 = baud_delay/2;
 reg [7:0]data;
 reg [7:0] dd;
-reg tx,rx,reset;
+reg tx,rx;
     
-top UD(.tx(tx),.rx(rx),.reset(reset));
+uart_design UD(.tx(tx),.rx(rx), .resetn(resetn));
     
     task send_byte(input reg [7:0] data);
-        rx=0;
-        $display("\n\n\n\nrx=0 sent",$time);
+        tx=0;
+        $display("\n\n\n\ntx=0 sent",$time);
             for (int ii=0;ii<8;ii++) begin
                 #baud_delay;
-                rx=data[ii];
-                $display("S : Data sent from host rx = data[%1d]= %1d  bit : %1d         time= %4t",ii,rx,ii,$time);
+                tx=data[ii];
+                $display("S : Data sent from host Tx = data[%1d]= %1d  bit : %1d         time= %4t",ii,tx,ii,$time);
                 if (ii == 7) begin
 //                    $display(" ",$time);
                     #baud_delay2;
-                    rx=1;
+                    tx=1;
                     repeat (2)//($urandom_range(3,1));
                     #baud_delay;
                 end
@@ -28,7 +28,7 @@ top UD(.tx(tx),.rx(rx),.reset(reset));
     endtask : send_byte
 
     initial begin
-        rx=1;
+        tx=1;
         #baud_delay;
 
         send_byte(8'h53);
@@ -43,14 +43,18 @@ top UD(.tx(tx),.rx(rx),.reset(reset));
             send_byte(dd);
         end
 
-        rx=1;
+        tx=1;
 
     end
 
     initial begin
         $dumpfile("wave.vcd");
         $dumpvars();
-        #10000000   $finish;
+        #100000000   $finish;
     end
 
 endmodule: tb
+
+
+
+

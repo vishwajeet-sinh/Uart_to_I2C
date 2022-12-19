@@ -1,7 +1,7 @@
 //
 //        UART to I2C BRIDGE BUS 
 //        GROUP-05
-//        1. Aishwarya 2. Swetha 3. Laksh 4. Vishwajeet
+//        1. Aiswariya 2. Swetha 3. Laksh 4. Vishwajeet
 //
 //
 //UART TO I2C DESIGN
